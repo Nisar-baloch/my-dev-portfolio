@@ -96,3 +96,26 @@
     animation: marquee 35s linear infinite;
   }
 }
+
+/* Shimmer sweep for badge */
+@layer utilities {
+  @keyframes shimmer-sweep {
+    0%   { transform: translateX(-100%) skewX(-12deg); }
+    100% { transform: translateX(300%) skewX(-12deg); }
+  }
+  .animate-shimmer {
+    animation: shimmer-sweep 2.5s ease-in-out infinite;
+    animation-delay: 1.5s;
+  }
+}
+
+/* Profile ring spin */
+@layer utilities {
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  .animate-spin-slow {
+    animation: spin-slow 8s linear infinite;
+  }
+}
