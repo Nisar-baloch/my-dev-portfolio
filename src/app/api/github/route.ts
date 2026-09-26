@@ -7,18 +7,10 @@ export async function GET() {
   // We need 12 weeks of 7 days = 84 days of data for our current UI.
   const totalDays = 12 * 7;
 
-  // Fallback data generator in case API fails or token is missing
-  const generateFallbackData = () => {
-    return Array.from({ length: totalDays }, (_, i) => {
-      const pseudoRandom = ((i * 13) % 100) / 100;
-      return pseudoRandom > 0.5 ? Math.floor(((i * 17) % 100) / 100 * 4) + 1 : 0;
-    });
-  };
-
   if (!token) {
-    console.warn("GitHub API token is missing, returning fallback data.");
+    console.warn("GitHub API token is missing, returning empty data.");
     return NextResponse.json({
-      contributions: generateFallbackData(),
+      contributions: Array(totalDays).fill(0),
       total: 0,
       username,
       error: "Missing token"
@@ -104,7 +96,7 @@ export async function GET() {
   } catch (error) {
     console.error("Error fetching GitHub data:", error);
     return NextResponse.json({
-      contributions: generateFallbackData(),
+      contributions: Array(totalDays).fill(0),
       total: 0,
       username,
       error: "Failed to fetch data"

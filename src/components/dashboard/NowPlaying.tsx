@@ -21,14 +21,22 @@ export function NowPlaying() {
     async function fetchData() {
       try {
         const res = await fetch("/api/now-playing")
-        const json = await res.json()
-        setData(json)
+        if (res.ok) {
+          const json = await res.json()
+          setData(json)
+        }
       } catch (error) {
         console.error("Failed to load Spotify data", error)
       }
     }
     
+    // Initial fetch
     fetchData()
+
+    // Poll every 30 seconds
+    const interval = setInterval(fetchData, 30000)
+
+    return () => clearInterval(interval)
   }, [])
 
   return (

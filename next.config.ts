@@ -14,6 +14,8 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Allow 127.0.0.1 in dev (used for Spotify OAuth callback)
+  allowedDevOrigins: ["127.0.0.1"],
 };
 
 export default nextConfig;

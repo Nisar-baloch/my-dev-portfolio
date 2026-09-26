@@ -8,6 +8,9 @@ export async function GET() {
     return NextResponse.json({
       text: "4h 12m",
       progress: 65,
+      totalText: "29h 24m",
+      topLanguage: "TypeScript",
+      topProject: "portfolio",
       error: "Missing API key",
     });
   }
@@ -31,10 +34,17 @@ export async function GET() {
 
     const data = await response.json();
     
-    // WakaTime returns human readable text like "4 hrs 12 mins"
-    // We'll simplify it to match our UI "4h 12m" if possible, or just use their text
     const todayStat = data.data.human_readable_daily_average || "0h 0m";
     const formattedText = todayStat.replace("hrs", "h").replace("hr", "h").replace("mins", "m").replace("min", "m");
+    
+    const totalStat = data.data.human_readable_total || "0h 0m";
+    const formattedTotal = totalStat.replace("hrs", "h").replace("hr", "h").replace("mins", "m").replace("min", "m");
+
+    const languages = data.data.languages || [];
+    const topLanguage = languages.length > 0 ? languages[0].name : "Unknown";
+
+    const projects = data.data.projects || [];
+    const topProject = projects.length > 0 ? projects[0].name : "Unknown";
     
     // Calculate a rough progress percentage against an 8 hour goal (8 * 3600 = 28800 seconds)
     const dailyAverageSeconds = data.data.daily_average || 0;
@@ -44,14 +54,20 @@ export async function GET() {
     return NextResponse.json({
       text: formattedText,
       progress,
+      totalText: formattedTotal,
+      topLanguage,
+      topProject,
     });
     
   } catch (error) {
     console.error("Error fetching WakaTime data:", error);
     return NextResponse.json({
-      text: "Data Unavailable",
+      text: "Unavailable",
       progress: 0,
+      totalText: "Unavailable",
+      topLanguage: "Unknown",
+      topProject: "Unknown",
       error: "Failed to fetch data",
-    });
+    }, { status: 500 });
   }
 }

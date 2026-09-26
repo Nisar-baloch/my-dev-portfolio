@@ -6,6 +6,9 @@ import { Activity } from "lucide-react"
 interface WakaTimeData {
   text: string;
   progress: number;
+  totalText?: string;
+  topLanguage?: string;
+  topProject?: string;
   error?: string;
 }
 
@@ -21,6 +24,11 @@ export function WakaTimeStats() {
         setData(json)
       } catch (error) {
         console.error("Failed to load WakaTime stats", error)
+        setData({
+          text: "Unavailable",
+          progress: 0,
+          error: "Failed to fetch data",
+        })
       } finally {
         setLoading(false)
       }
@@ -58,6 +66,14 @@ export function WakaTimeStats() {
             <div className="flex justify-between mt-2 text-xs text-muted-foreground font-medium">
               <span>Goal: 8h</span>
               <span>{data?.progress || 0}%</span>
+            </div>
+            <div className="flex justify-between mt-1 text-[10px] text-muted-foreground/60">
+              <span className="truncate mr-2" title={`Top project: ${data?.topProject || "Unknown"}`}>
+                {data?.topProject && data.topProject !== "Unknown" ? data.topProject : "Weekly: " + (data?.totalText || "0h")}
+              </span>
+              <span className="truncate text-right" title={`Top language: ${data?.topLanguage || "Unknown"}`}>
+                {data?.topLanguage || ""}
+              </span>
             </div>
           </>
         )}
