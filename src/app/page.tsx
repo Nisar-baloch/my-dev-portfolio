@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/navbar/Navbar"
 import { Hero } from "@/components/hero/Hero"
 import { DeveloperDashboard } from "@/components/dashboard/DeveloperDashboard"
+import { Stack } from "@/components/sections/Stack"
 import { About } from "@/components/sections/About"
 import { Hobbies } from "@/components/sections/Hobbies"
 import { Skills } from "@/components/sections/Skills"
@@ -17,6 +18,7 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
         <DeveloperDashboard />
+        <Stack />
         <About />
         <Hobbies />
         <Skills />
